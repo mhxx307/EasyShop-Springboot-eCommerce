@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <!-- <head th:replace="fragments :: page_head(${pageTitle}, 'none')" /> -->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0" />
+        <title>Home - EasyShop Admin</title>
+        <!-- th:href @{} to auto injection the context path, ex:localhost:8080/EasyshopAdmin/webjars...-->
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <!-- <div th:replace="navigation :: menu"></div> -->
+            <div>
+                <h2>Manage Users</h2>
+            </div>
+
+            <form
+                th:action="@{/users/save}"
+                method="post"
+                style="max-width: 700px; margin: 0 auto"
+                enctype="multipart/form-data"
+                th:object="${user}"
+            >
+                <input type="hidden" th:field="*{id}" />
+                <div class="border border-secondary rounded p-3">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">E-mail:</label>
+                        <div class="col-sm-8">
+                            <input
+                                type="email"
+                                class="form-control"
+                                th:field="*{email}"
+                                required
+                                minlength="8"
+                                maxlength="128"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">First Name:</label>
+                        <div class="col-sm-8">
+                            <input
+                                type="text"
+                                class="form-control"
+                                th:field="*{firstName}"
+                                required
+                                minlength="2"
+                                maxlength="45"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Last Name:</label>
+                        <div class="col-sm-8">
+                            <input
+                                type="text"
+                                class="form-control"
+                                th:field="*{lastName}"
+                                required
+                                minlength="2"
+                                maxlength="45"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Password:</label>
+                        <div class="col-sm-8">
+                            <input
+                                th:if="${user.id == null}"
+                                type="password"
+                                class="form-control"
+                                th:field="*{password}"
+                                required
+                                minlength="8"
+                                maxlength="20"
+                            />
+
+                            <input
+                                th:if="${user.id != null}"
+                                type="password"
+                                class="form-control"
+                                th:field="*{password}"
+                                minlength="8"
+                                maxlength="20"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Roles:</label>
+                        <div class="col-sm-8">
+                            <th:block th:each="role : ${listRoles}">
+                                <input
+                                    type="checkbox"
+                                    th:field="*{roles}"
+                                    th:text="${role.name}"
+                                    th:value="${role.id}"
+                                    class="m-2"
+                                />
+                                - <small>[[${role.description}]]</small>
+                                <br />
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Enabled:</label>
+                        <div class="col-sm-8" style="display: flex; align-items: center">
+                            <input type="checkbox" th:field="*{enabled}" />
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <input type="submit" value="Save" class="btn btn-primary m-3" />
+                        <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel" />
+                    </div>
+                </div>
+            </form>
+
+            <!-- <div th:replace="modal_fragments :: modal_dialog"></div>
+
+            <div th:replace="fragments :: footer"></div> -->
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#buttonCancel").on("click", function () {
+                    window.location.href = "[[@{/users}]]";
+                });
+            });
+        </script>
+        <!-- <script type="text/javascript">
+            MAX_FILE_SIZE = 102400; // 100KB
+
+            moduleURL = "[[@{/users}]]";
+
+            function checkEmailUnique(form) {
+                url = "[[@{/users/check_email}]]";
+                userEmail = $("#email").val();
+                userId = $("#id").val();
+                csrfValue = $("input[name='_csrf']").val();
+
+                params = { id: userId, email: userEmail, _csrf: csrfValue };
+
+                $.post(url, params, function (response) {
+                    if (response == "OK") {
+                        form.submit();
+                    } else if (response == "Duplicated") {
+                        showWarningModal("There is another user having the email " + userEmail);
+                    } else {
+                        showErrorModal("Unknown response from server");
+                    }
+                }).fail(function () {
+                    showErrorModal("Could not connect to the server");
+                });
+
+                return false;
+            }
+        </script>
+        <script th:src="@{/js/common_form.js}"></script> -->
+    </body>
+</html>
