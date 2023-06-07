@@ -57,10 +57,39 @@
             </div>
 
             <div>
-                <h1>EasyShop admin control panel</h1>
+                <h2>Manage users</h2>
             </div>
 
             <div>
+                <table class="table table-bordered table-stripedtable table-responsive-xl">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>User ID</th>
+                            <th>Photo</th>
+                            <th>E-mail</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Roles</th>
+                            <th>Enabled</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user : ${listUsers}">
+                            <td>[[${user.id}]]</td>
+                            <td>photo</td>
+                            <td>[[${user.email}]]</td>
+                            <td>[[${user.firstName}]]</td>
+                            <td>[[${user.lastName}]]</td>
+                            <td>[[${user.roles}]]</td>
+                            <td>[[${user.enabled}]]</td>
+                            <td>Edit &nbsp; Delete</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center">
                 <p>EasyShop Control Panel - Copyright &copy; EasyShop</p>
             </div>
         </div>

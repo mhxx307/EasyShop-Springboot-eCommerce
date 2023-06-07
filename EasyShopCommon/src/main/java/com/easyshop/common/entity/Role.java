@@ -19,16 +19,15 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Table(name = "roles")
 public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(length = 40, nullable = false, unique = true)
 	private String name;
-	
+
 	@Column(length = 150, nullable = false)
 	private String description;
 
@@ -53,6 +52,10 @@ public class Role {
 		Role other = (Role) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
 }
