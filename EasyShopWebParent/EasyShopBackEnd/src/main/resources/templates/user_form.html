@@ -120,68 +120,85 @@
 
                     <div class="text-center">
                         <input type="submit" value="Save" class="btn btn-primary m-3" aria-label="Save" />
-                        <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel" aria-label="Cancel" />
+                        <input
+                            type="button"
+                            value="Cancel"
+                            class="btn btn-secondary"
+                            id="buttonCancel"
+                            aria-label="Cancel"
+                        />
                     </div>
                 </div>
             </form>
-            
-			<div class="modal fade text-center" id="modalDialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title" id="modalTitle">Warning</h4>
-							<button type="button" acce class="close" data-dismiss="modal" style="outline: none;" aria-label="Close">&times;</button>
-						</div>
-						
-						<div class="modal-body">
-							<span id="modalBody"></span>
-						</div>
-						
-						<div class="modal-footer">
-							<button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
+
+            <div class="modal fade text-center" id="modalDialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modalTitle">Warning</h4>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                style="outline: none"
+                                aria-label="Close"
+                            >
+                                &times;
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <span id="modalBody"></span>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- <div th:replace="modal_fragments :: modal_dialog"></div>
 
             <div th:replace="fragments :: footer"></div> -->
         </div>
+
         <script type="text/javascript">
             $(document).ready(function () {
                 $("#buttonCancel").on("click", function () {
                     window.location.href = "[[@{/users}]]";
                 });
             });
-            
+
             function checkEmailUnique(form) {
-				const url = "[[@{/users/check_email}]]";
-				const userEmail = $("#email").val();
-				const csrfValue = $("input[name='_csrf']").val();
-				const userId = $('#id').val();
-				const params = {id: userId, email: userEmail, _csrf: csrfValue};
-				
-				$.post(url, params, function(res) {
-					if (res == "Ok") {
-						form.submit();
-					} else if (res == "Duplicated") {
-						showModalDialog("Warning", "There is another user having the email " + userEmail);
-					} else {
-						showModalDialog("Error", "Unknown response from server!");
-					}
-				}).fail(function () {
-					showModalDialog("Error", "Could not connect to the server!");
-				});
-				
-				return false;
-			}
-			
-			function showModalDialog(title, message) {
-				$('#modalTittle').text(title);
-				$('#modalBody').text(message);
-				$('#modalDialog').modal();
-			}
+                const url = "[[@{/users/check_email}]]";
+                const userEmail = $("#email").val();
+                const csrfValue = $("input[name='_csrf']").val();
+                const userId = $("#id").val();
+                const params = { id: userId, email: userEmail, _csrf: csrfValue };
+
+                $.post(url, params, function (res) {
+                    if (res == "Ok") {
+                        form.submit();
+                    } else if (res == "Duplicated") {
+                        showModalDialog("Warning", "There is another user having the email " + userEmail);
+                    } else {
+                        showModalDialog("Error", "Unknown response from server!");
+                    }
+                }).fail(function () {
+                    showModalDialog("Error", "Could not connect to the server!");
+                });
+
+                return false;
+            }
+
+            function showModalDialog(title, message) {
+                $("#modalTittle").text(title);
+                $("#modalBody").text(message);
+                $("#modalDialog").modal();
+            }
         </script>
     </body>
 </html>

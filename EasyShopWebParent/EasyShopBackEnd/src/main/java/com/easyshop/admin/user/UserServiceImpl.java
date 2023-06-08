@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 import com.easyshop.common.entity.Role;
 import com.easyshop.common.entity.User;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
@@ -78,5 +81,20 @@ public class UserServiceImpl implements UserService {
 	private void encodePassword(User user) {
 		String encodedPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodedPassword);
+	}
+
+	@Override
+	public void deleteById(Integer id) throws UserNotFoundException {
+		boolean isUserExisting = userRepository.existsById(id);
+		if (!isUserExisting) {
+			throw new UserNotFoundException("Could not find any user with ID " + id);
+		}
+		
+		userRepository.deleteById(id);
+	}
+
+	@Override
+	public void updateUserEnabledStatus(Integer id, boolean status) {
+		userRepository.updateEnabledStatus(id, status);
 	}
 }
