@@ -99,7 +99,7 @@
 								<a th:if="${user.enabled == false}" class="fas fa-check-circle fa-2x icon-dark text-decoration-none" href=""></a>
 							</td>
                             <td>
-								<a class="fas fa-edit fa-2x icon-green text-decoration-none" href="#" data-toggle="tooltip" data-placement="top" title="Edit"></a> &nbsp;
+								<a class="fas fa-edit fa-2x icon-green text-decoration-none" th:href="@{'/users/edit/' + ${user.id}}" data-toggle="tooltip" data-placement="top" title="Edit this user"></a> &nbsp;
                             	<a class="fas fa-trash fa-2x icon-dark text-decoration-none" href="#" data-toggle="tooltip" data-placement="top" title="Delete"></a>
                             </td>
                         </tr>

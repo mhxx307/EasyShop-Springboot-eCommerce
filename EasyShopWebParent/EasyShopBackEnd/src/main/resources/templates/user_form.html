@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0" />
-        <title>Home - EasyShop Admin</title>
+        <title>[[${pageTitle}]]</title>
         <!-- th:href @{} to auto injection the context path, ex:localhost:8080/EasyshopAdmin/webjars...-->
         <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
@@ -14,7 +14,7 @@
         <div class="container-fluid">
             <!-- <div th:replace="navigation :: menu"></div> -->
             <div>
-                <h2>Manage Users</h2>
+                <h2>Manage Users | [[${pageTitle}]]</h2>
             </div>
 
             <form
@@ -89,6 +89,7 @@
                                 th:field="*{password}"
                                 minlength="8"
                                 maxlength="20"
+                                placeholder="Let blank if you don't want to change password"
                             />
                         </div>
                     </div>
@@ -158,7 +159,8 @@
 				const url = "[[@{/users/check_email}]]";
 				const userEmail = $("#email").val();
 				const csrfValue = $("input[name='_csrf']").val();
-				const params = {email: userEmail, _csrf: csrfValue};
+				const userId = $('#id').val();
+				const params = {id: userId, email: userEmail, _csrf: csrfValue};
 				
 				$.post(url, params, function(res) {
 					if (res == "Ok") {
