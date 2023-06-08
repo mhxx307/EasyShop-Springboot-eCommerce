@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
     <!-- <head th:replace="fragments :: page_head(${pageTitle}, 'none')" /> -->
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -118,8 +118,8 @@
                     </div>
 
                     <div class="text-center">
-                        <input type="submit" value="Save" class="btn btn-primary m-3" />
-                        <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel" />
+                        <input type="submit" value="Save" class="btn btn-primary m-3" aria-label="Save" />
+                        <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel" aria-label="Cancel" />
                     </div>
                 </div>
             </form>
@@ -129,7 +129,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" id="modalTitle">Warning</h4>
-							<button type="button" class="close" data-dismiss="modal" style="outline: none;">&times;</button>
+							<button type="button" acce class="close" data-dismiss="modal" style="outline: none;" aria-label="Close">&times;</button>
 						</div>
 						
 						<div class="modal-body">
@@ -137,7 +137,7 @@
 						</div>
 						
 						<div class="modal-footer">
-							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">Close</button>
 						</div>
 					</div>
 				</div>
