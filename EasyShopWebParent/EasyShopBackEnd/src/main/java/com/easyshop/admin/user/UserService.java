@@ -8,7 +8,7 @@ import com.easyshop.common.entity.User;
 public interface UserService {
 	List<User> listAll();
 	List<Role> listRoles();
-	void save(User user);
+	User save(User user);
 	boolean isEmailUnique(Integer userId, String email);
 	User findUserById(Integer id) throws UserNotFoundException;
 	void deleteById(Integer id) throws UserNotFoundException;

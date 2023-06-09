@@ -112,6 +112,20 @@
                     </div>
 
                     <div class="form-group row">
+                        <label class="col-sm-4 col-form-label">Photos:</label>
+                        <div class="col-sm-8" style="display: flex; align-items: center">
+							<input type="hidden" th:field="*{photos}" />
+                            <input type="file" id="fileImage" name="image" accept="image/png, image/jpeg" class="mb-2" />
+                            <img
+                                id="thumbnail"
+                                th:src="@{${user.photosImagePath}}"
+                                alt="Photo preview"
+                                class="img-fluid"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Enabled:</label>
                         <div class="col-sm-8" style="display: flex; align-items: center">
                             <input type="checkbox" th:field="*{enabled}" />
@@ -166,18 +180,35 @@
         </div>
 
         <script type="text/javascript">
+            var MAX_FILE_SIZE = 102400; // 100KB
+
+            var moduleURL = "[[@{/users}]]";
+
             $(document).ready(function () {
                 $("#buttonCancel").on("click", function () {
-                    window.location.href = "[[@{/users}]]";
+                    window.location.href = moduleURL;
+                });
+
+                $("#fileImage").change(function () {
+                    var fileSize = this.files[0].size;
+                    alert("File size: " + fileSize);
+
+                    if (fileSize > MAX_FILE_SIZE) {
+                        this.setCustomValidity("File size must be less than 1MB!");
+                        this.reportValidity();
+                    } else {
+                        this.setCustomValidity("");
+                        showImageThumbnail(this);
+                    }
                 });
             });
 
             function checkEmailUnique(form) {
-                const url = "[[@{/users/check_email}]]";
-                const userEmail = $("#email").val();
-                const csrfValue = $("input[name='_csrf']").val();
-                const userId = $("#id").val();
-                const params = { id: userId, email: userEmail, _csrf: csrfValue };
+                var url = "[[@{/users/check_email}]]";
+                var userEmail = $("#email").val();
+                var csrfValue = $("input[name='_csrf']").val();
+                var userId = $("#id").val();
+                var params = { id: userId, email: userEmail, _csrf: csrfValue };
 
                 $.post(url, params, function (res) {
                     if (res == "Ok") {
@@ -198,6 +229,16 @@
                 $("#modalTittle").text(title);
                 $("#modalBody").text(message);
                 $("#modalDialog").modal();
+            }
+
+            function showImageThumbnail(fileInput) {
+                var file = fileInput.files[0];
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#thumbnail").attr("src", e.target.result);
+                };
+
+                reader.readAsDataURL(file);
             }
         </script>
     </body>

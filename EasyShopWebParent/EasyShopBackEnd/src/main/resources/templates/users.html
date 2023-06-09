@@ -92,7 +92,8 @@
                         <tr th:each="user : ${listUsers}">
                             <td>[[${user.id}]]</td>
                             <td>
-                                <span class="fas fa-portrait fa-3x icon-silver"></span>
+                                <span th:if="${user.photos == null}" class="fas fa-portrait fa-3x icon-silver"></span>
+                                <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}" style="width: 100px;" />
                             </td>
                             <td>[[${user.email}]]</td>
                             <td>[[${user.firstName}]]</td>
@@ -179,9 +180,7 @@
                 $('[data-toggle="tooltip"]').tooltip({
                     container: "body",
                 });
-            });
-
-            $(document).ready(function () {
+                
                 $(".link-delete").click(function (e) {
                     e.preventDefault();
                     var link = $(this);
