@@ -3,6 +3,9 @@ package com.easyshop.admin.user;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,8 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+	public static int USERS_PER_PAGE = 4;
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -97,4 +102,11 @@ public class UserServiceImpl implements UserService {
 	public void updateUserEnabledStatus(Integer id, boolean status) {
 		userRepository.updateEnabledStatus(id, status);
 	}
+
+	@Override
+	public Page<User> listByPage(int pageNum) {
+		Pageable pageable = PageRequest.of(pageNum - 1, USERS_PER_PAGE);
+		return userRepository.findAll(pageable);
+	}
+
 }

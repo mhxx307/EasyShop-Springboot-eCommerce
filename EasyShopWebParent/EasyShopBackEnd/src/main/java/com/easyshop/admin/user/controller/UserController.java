@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.easyshop.admin.user.UserNotFoundException;
 import com.easyshop.admin.user.UserService;
+import com.easyshop.admin.user.UserServiceImpl;
 import com.easyshop.admin.utils.FileUploadUtil;
 import com.easyshop.common.entity.Role;
 import com.easyshop.common.entity.User;
@@ -37,9 +39,27 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping
-	public String listAll(Model model) {
-		List<User> listUsers = userService.listAll();
+	public String listFirstPage(Model model) {
+		return listByPage(1, model);
+	}
+	
+	@GetMapping("/page/{pageNum}")
+	public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model) {
+		Page<User> page = userService.listByPage(pageNum);
+		List<User> listUsers = page.getContent();
+		
+		long startCount = (pageNum - 1) * UserServiceImpl.USERS_PER_PAGE + 1;
+		long endCount = startCount + UserServiceImpl.USERS_PER_PAGE - 1;
+		if (endCount > page.getTotalElements()) {
+			endCount = page.getTotalElements();
+		}
+		
 		model.addAttribute("listUsers", listUsers);
+		model.addAttribute("totalItems", page.getTotalElements());
+		model.addAttribute("startCount", startCount);
+		model.addAttribute("endCount", endCount);
+		model.addAttribute("currentPage", pageNum);
+		model.addAttribute("totalPages", page.getTotalPages());
 
 		return "users";
 	}
