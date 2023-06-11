@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.easyshop.admin.user.UserCsvExporter;
 import com.easyshop.admin.user.UserNotFoundException;
 import com.easyshop.admin.user.UserService;
 import com.easyshop.admin.user.UserServiceImpl;
 import com.easyshop.admin.utils.FileUploadUtil;
 import com.easyshop.common.entity.Role;
 import com.easyshop.common.entity.User;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -152,4 +155,12 @@ public class UserController {
 
 		return "redirect:/users";
 	}
+	
+	@GetMapping("/export/csv")
+	public void exportToCsv(HttpServletResponse response) throws IOException {
+		List<User> listUsers = userService.listAll();
+		UserCsvExporter exporter = new UserCsvExporter();
+		exporter.export(listUsers, response);
+	}
+	
 }
