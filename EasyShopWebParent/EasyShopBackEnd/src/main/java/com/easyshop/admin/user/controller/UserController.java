@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.easyshop.admin.user.UserCsvExporter;
+import com.easyshop.admin.user.UserExcelExporter;
 import com.easyshop.admin.user.UserNotFoundException;
 import com.easyshop.admin.user.UserService;
 import com.easyshop.admin.user.UserServiceImpl;
@@ -160,6 +161,13 @@ public class UserController {
 	public void exportToCsv(HttpServletResponse response) throws IOException {
 		List<User> listUsers = userService.listAll();
 		UserCsvExporter exporter = new UserCsvExporter();
+		exporter.export(listUsers, response);
+	}
+	
+	@GetMapping("/export/excel")
+	public void exportToExcel(HttpServletResponse response) throws IOException {
+		List<User> listUsers = userService.listAll();
+		UserExcelExporter exporter = new UserExcelExporter();
 		exporter.export(listUsers, response);
 	}
 	
