@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fragments</title>
+    </head>
+    <body>
+        <!-- User column sort -->
+        <th th:fragment="column_link(fieldName, columnLabel)">
+            <a
+                th:href="@{'/users/page/' + ${currentPage} + '?sortField='+ ${fieldName} +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}"
+                class="text-white"
+                >[[${columnLabel}]]</a
+            >
+            <span
+                th:if="${sortField == fieldName}"
+                th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"
+            ></span>
+        </th>
+
+        <!-- User paginated -->
+        <a
+            th:fragment="page_link(pageNumber, label)"
+            class="page-link"
+            th:href="@{'/users/page/' + ${pageNumber} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}"
+            >[[${label}]]</a
+        >
+    </body>
+</html>

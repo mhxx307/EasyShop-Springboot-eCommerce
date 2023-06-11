@@ -28,10 +28,8 @@ import com.easyshop.common.entity.User;
  * 
  * @author La Vo Minh Quan
  * 
- *   [[@]]: duong dan , path 
- *   [[$]]: bien, variable
- *   sortDir: asc, desc
- * 	 sortField: field to sort
+ *         [[@]]: duong dan , path [[$]]: bien, variable sortDir: asc, desc
+ *         sortField: field to sort
  */
 
 @Controller
@@ -42,13 +40,14 @@ public class UserController {
 
 	@GetMapping
 	public String listFirstPage(Model model) {
-		return listByPage(1, model, "firstName", "asc");
+		return listByPage(1, model, "firstName", "asc", null);
 	}
 
 	@GetMapping("/page/{pageNum}")
 	public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model,
-			@RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir) {
-		Page<User> page = userService.listByPage(pageNum, sortField, sortDir);
+			@Param("sortField") String sortField, @Param("sortDir") String sortDir,
+			@Param("keyword") String keyword) {
+		Page<User> page = userService.listByPage(pageNum, sortField, sortDir, keyword);
 		List<User> listUsers = page.getContent();
 
 		long startCount = (pageNum - 1) * UserServiceImpl.USERS_PER_PAGE + 1;
@@ -56,7 +55,7 @@ public class UserController {
 		if (endCount > page.getTotalElements()) {
 			endCount = page.getTotalElements();
 		}
-		
+
 		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 
 		model.addAttribute("listUsers", listUsers);
@@ -68,6 +67,7 @@ public class UserController {
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("reverseSortDir", reverseSortDir);
+		model.addAttribute("keyword", keyword);
 
 		return "users";
 	}
@@ -103,7 +103,13 @@ public class UserController {
 		}
 
 		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
-		return "redirect:/users";
+		
+		return getRedirectURLToAffectedUser(user);
+	}
+
+	private String getRedirectURLToAffectedUser(User user) {
+		String firstPartOfEmail = user.getEmail().split("@")[0];
+		return "redirect:/users/page/1?sortField=id&sortDir=asc&keyword=" + firstPartOfEmail;
 	}
 
 	@GetMapping("/edit/{id}")

@@ -19,7 +19,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class UserServiceImpl implements UserService {
 	public static int USERS_PER_PAGE = 4;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -44,7 +44,8 @@ public class UserServiceImpl implements UserService {
 		boolean isUpdatingUser = (user.getId() != null);
 		if (isUpdatingUser) {
 			User existingUser = userRepository.findById(user.getId()).get();
-			// check the password in user form is empty or not, if is empty meaning the admin want to keep the password
+			// check the password in user form is empty or not, if is empty meaning the
+			// admin want to keep the password
 			if (user.getPassword().isEmpty()) {
 				user.setPassword(existingUser.getPassword());
 			} else {
@@ -59,13 +60,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean isEmailUnique(Integer userId, String email) {
 		User userByEmail = userRepository.findUserByEmail(email);
-		
-		if (userByEmail == null) return true;
-		
+
+		if (userByEmail == null)
+			return true;
+
 		boolean isCreatingNew = (userId == null);
-		
+
 		if (isCreatingNew) {
-			if (userByEmail != null) return false;
+			if (userByEmail != null)
+				return false;
 		} else {
 			if (userByEmail.getId() != userId) {
 				return false;
@@ -95,7 +98,7 @@ public class UserServiceImpl implements UserService {
 		if (!isUserExisting) {
 			throw new UserNotFoundException("Could not find any user with ID " + id);
 		}
-		
+
 		userRepository.deleteById(id);
 	}
 
@@ -105,11 +108,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Page<User> listByPage(int pageNum, String sortField, String sortDir) {
+	public Page<User> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
 		Sort sort = Sort.by(sortField);
 		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-		
+
 		Pageable pageable = PageRequest.of(pageNum - 1, USERS_PER_PAGE, sort);
+		
+		if (keyword != null) {
+			return userRepository.findAll(keyword, pageable);
+		}
+		
 		return userRepository.findAll(pageable);
 	}
 
