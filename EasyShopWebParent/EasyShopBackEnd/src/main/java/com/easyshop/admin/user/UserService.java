@@ -3,7 +3,6 @@ package com.easyshop.admin.user;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import com.easyshop.common.entity.Role;
 import com.easyshop.common.entity.User;
