@@ -1,17 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymleaf-extras-springsecurity6">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0" />
         <title>Home - EasyShop Admin</title>
         <!-- th:href @{} to auto injection the context path, ex:localhost:8080/EasyshopAdmin/webjars...-->
+        
         <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/styles.css}" />
+
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
         <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     </head>
     <body>
         <div class="container-fluid">
             <div>
+				<form th:action="@{/logout}" method="post" name="logoutForm" th:hidden="true">
+					<input type="submit" />
+				</form>
                 <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
                     <a class="navbar-brand" th:href="@{/}">
                         <img th:src="@{/images/logo-no-background.png}" alt="logo" style="width: 250px; height: 90px" />
@@ -51,6 +59,15 @@
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{/settings}">Settings</a>
                             </li>
+                            <li class="nav-item ml-4">
+								<span class="fas fa-user fa-2x icon-silver"></span>
+							</li>
+                            <li class="nav-item dropdown" style="cursor: pointer;">
+								<a class="nav-link dropdown-toggle" data-toggle="dropdown" sec:authentication="principal.fullname"></a>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="" id="logoutLink">Logout</a>
+								</div>
+							</li>
                         </ul>
                     </div>
                 </nav>
@@ -64,5 +81,13 @@
                 <p>EasyShop Control Panel - Copyright &copy; EasyShop</p>
             </div>
         </div>
+        <script type="text/javascript">
+			$(document).ready(function() {
+				$("#logoutLink").on("click", function(e) {
+					e.preventDefault();
+					document.logoutForm.submit();
+				});
+			})
+		</script>
     </body>
 </html>

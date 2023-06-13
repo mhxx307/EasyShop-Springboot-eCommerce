@@ -107,7 +107,8 @@ public class UserRepositoryTests {
 	
 	@Test
 	public void testFindUserByEmail() {
-		String email = "ravi@gmail.com";
+		String email = "ammanollashirisha2020@gmail.com";
+
 		User user = userRepository.findUserByEmail(email);
 		System.out.println("Username: " + user.getFirstName());
 		
