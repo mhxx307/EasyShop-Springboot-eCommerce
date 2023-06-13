@@ -8,7 +8,7 @@
 
         <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
         <link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
-        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/styles.css}" />
 
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -69,13 +69,34 @@
 
             <div>
                 <h2>Manage users</h2>
-                <a th:href="@{/users/new}">Create new user</a>
-                &nbsp;|&nbsp;
-                <a th:href="@{/users/export/csv}">Export to csv</a>
-                &nbsp;|&nbsp;
-                <a th:href="@{/users/export/excel}">Export to excel</a>
-                &nbsp;|&nbsp;
-                <a th:href="@{/users/export/pdf}">Export to pdf</a>
+                <a
+                    th:href="@{/users/new}"
+                    class="fas fa-2x fa-user-plus icon-dark mr-2"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Create new user"
+                ></a>
+                <a
+                    th:href="@{/users/export/csv}"
+                    class="fas fa-2x fa-file-csv icon-dark mr-2"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Export to CSV"
+                ></a>
+                <a
+                    th:href="@{/users/export/excel}"
+                    class="fas fa-2x fa-file-excel icon-dark mr-2"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Export to EXCEL"
+                ></a>
+                <a
+                    th:href="@{/users/export/pdf}"
+                    class="fas fa-2x fa-file-pdf icon-dark"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Export to PDF"
+                ></a>
             </div>
 
             <div th:if="${message != null}" class="alert alert-success text-center">[[${message}]]</div>
@@ -87,29 +108,33 @@
                     Filter: &nbsp;
                     <input type="search" name="keyword" th:value="${keyword}" required class="form-control" />
                     &nbsp;&nbsp;
-                    <input type="submit" class="btn btn-primary" value="Search" />
+                    <button type="submit" class="btn btn-primary" value="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
                     &nbsp;&nbsp;
-                    <input type="button" class="btn btn-secondary" value="Clear" onclick="clearFilter()" />
+                    <button type="button" class="btn btn-secondary" value="Clear" onclick="clearFilter()">
+                        <i class="fas fa-eraser"></i>
+                    </button>
                 </form>
             </div>
 
-            <div>
-                <table class="table table-bordered table-stripedtable table-responsive-xl">
+            <div class="full-details">
+                <table class="table table-bordered table-striped table-hover table-responsive-xl">
                     <thead class="thead-dark">
                         <tr>
-                            <th th:replace="fragments :: column_link('id', 'User ID')" />
+                           <th class="hideable-column"><th th:replace="fragments :: column_link('id', 'User ID', 'tag')" /></th>
                             <th>Photos</th>
-                            <th th:replace="fragments :: column_link('email', 'E-mail')" />
-                            <th th:replace="fragments :: column_link('firstName', 'First name')" />
-                            <th th:replace="fragments :: column_link('lastName', 'Last name')" />
+                            <th class="hideable-column"><th th:replace="fragments :: column_link('email', 'E-mail', 'tag')" /></th>
+                            <th th:replace="fragments :: column_link('firstName', 'First name', 'none')" />
+                            <th th:replace="fragments :: column_link('lastName', 'Last name', 'none')" />
                             <th>Roles</th>
-                            <th th:replace="fragments :: column_link('enabled', 'Enabled')" />
+                            <th th:replace="fragments :: column_link('enabled', 'Enabled', 'none')" />
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="user : ${listUsers}">
-                            <td>[[${user.id}]]</td>
+                            <td class="hideable-column">[[${user.id}]]</td>
                             <td>
                                 <span th:if="${user.photos == null}" class="fas fa-portrait fa-3x icon-silver"></span>
                                 <img
@@ -118,7 +143,7 @@
                                     style="width: 100px"
                                 />
                             </td>
-                            <td>[[${user.email}]]</td>
+                            <td class="hideable-column">[[${user.email}]]</td>
                             <td>[[${user.firstName}]]</td>
                             <td>[[${user.lastName}]]</td>
                             <td>[[${user.roles}]]</td>
@@ -161,6 +186,43 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <div class="less-details">
+                <div th:each="user : ${listUsers}" class="row">
+                    <div class="col-4">
+                        <span th:if="${user.photos == null}" class="fas fa-portrait fa-3x icon-silver"></span>
+                        <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}" style="width: 100px" />
+                    </div>
+                    <div class="col-8">
+                        <div>[[${user.fullName}]]</div>
+                        <div>[[${user.roles}]]</div>
+                        <div class="mt-1">
+                            <a
+                                th:if="${user.enabled == true}"
+                                class="fas fa-check-circle fa-2x icon-green text-decoration-none"
+                                th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
+                            ></a>
+                            <a
+                                th:if="${user.enabled == false}"
+                                class="fas fa-check-circle fa-2x icon-dark text-decoration-none"
+                                th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
+                            ></a>
+                            &nbsp;
+                            <a
+                                class="fas fa-edit fa-2x icon-green text-decoration-none"
+                                th:href="@{'/users/edit/' + ${user.id}}"
+                            ></a>
+                            &nbsp;
+                            <a
+                                class="fas fa-trash fa-2x icon-dark text-decoration-none link-delete"
+                                th:href="@{'/users/delete/' + ${user.id}}"
+                                th:userId="${user.id}"
+                            ></a>
+                        </div>
+                    </div>
+                    <div>&nbsp;</div>
+                </div>
             </div>
 
             <div class="text-center m-1" th:if="${totalItems > 0}">

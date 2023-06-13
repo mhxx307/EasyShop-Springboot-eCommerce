@@ -7,7 +7,7 @@
     </head>
     <body>
         <!-- User column sort -->
-        <th th:fragment="column_link(fieldName, columnLabel)">
+        <th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
             <a
                 th:href="@{'/users/page/' + ${currentPage} + '?sortField='+ ${fieldName} +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}"
                 class="text-white"
