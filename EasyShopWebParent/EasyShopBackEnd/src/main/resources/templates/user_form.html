@@ -1,18 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-    <!-- <head th:replace="fragments :: page_head(${pageTitle}, 'none')" /> -->
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0" />
-        <title>[[${pageTitle}]]</title>
-        <!-- th:href @{} to auto injection the context path, ex:localhost:8080/EasyshopAdmin/webjars...-->
-        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-    </head>
+    <head th:replace="fragments :: page_head('Form - EasyShop Admin')" />
     <body>
         <div class="container-fluid">
-            <!-- <div th:replace="navigation :: menu"></div> -->
+            <div th:replace="navigation :: menu" />
             <div>
                 <h2>Manage Users | [[${pageTitle}]]</h2>
             </div>
@@ -114,8 +105,14 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Photos:</label>
                         <div class="col-sm-8" style="display: flex; align-items: center">
-							<input type="hidden" th:field="*{photos}" />
-                            <input type="file" id="fileImage" name="image" accept="image/png, image/jpeg" class="mb-2" />
+                            <input type="hidden" th:field="*{photos}" />
+                            <input
+                                type="file"
+                                id="fileImage"
+                                name="image"
+                                accept="image/png, image/jpeg"
+                                class="mb-2"
+                            />
                             <img
                                 id="thumbnail"
                                 th:src="@{${user.photosImagePath}}"
@@ -174,9 +171,9 @@
                 </div>
             </div>
 
-            <!-- <div th:replace="modal_fragments :: modal_dialog"></div>
+            <!-- <div th:replace="modal_fragments :: modal_dialog"></div> -->
 
-            <div th:replace="fragments :: footer"></div> -->
+            <div th:replace="fragments :: footer" />
         </div>
 
         <script type="text/javascript">
