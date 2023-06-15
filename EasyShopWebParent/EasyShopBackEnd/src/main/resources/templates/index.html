@@ -6,7 +6,11 @@
             <div th:replace="navigation :: menu" />
 
             <div>
-                <h1>EasyShop admin control panel</h1>
+                <h1>EasyShop - Admin control panel</h1>
+                <span>Welcome</span>
+                <a th:href="@{/account}" sec:authentication="principal.fullname" />
+                &nbsp;
+                <span sec:authentication="principal.authorities" />
             </div>
 
             <div th:replace="fragments :: footer" />

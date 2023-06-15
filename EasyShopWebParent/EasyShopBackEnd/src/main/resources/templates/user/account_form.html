@@ -89,7 +89,7 @@
 	
 </div>
 <script type="text/javascript">
-	moduleURL = "[[@{/}]]";
+	var moduleURL = "[[@{/}]]";
 
 	function checkPasswordMatch(confirmPassword) {
 		if (confirmPassword.value != $("#password").val()) {
@@ -99,7 +99,7 @@
 		}
 	}
 </script>
-<!--<script th:src="@{/js/common_form.js}"></script>-->
+<script th:src="@{/js/common_form.js}"></script>
 
 </body>
 </html>

@@ -46,6 +46,7 @@ public class SpringSecurity {
 		http.authorizeHttpRequests(auth -> {
 			try {
 				auth
+				.requestMatchers("/users/**").hasAuthority("Admin")
 				.anyRequest()
 				.authenticated()
 				.and()
