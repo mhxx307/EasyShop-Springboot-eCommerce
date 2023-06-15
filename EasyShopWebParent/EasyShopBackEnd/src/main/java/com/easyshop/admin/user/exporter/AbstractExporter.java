@@ -1,4 +1,4 @@
-package com.easyshop.admin.user;
+package com.easyshop.admin.user.exporter;
 
 import java.io.IOException;
 import java.text.DateFormat;

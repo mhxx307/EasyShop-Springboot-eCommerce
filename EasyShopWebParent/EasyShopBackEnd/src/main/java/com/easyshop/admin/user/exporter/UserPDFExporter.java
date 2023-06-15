@@ -1,4 +1,4 @@
-package com.easyshop.admin.user;
+package com.easyshop.admin.user.exporter;
 
 import java.awt.Color;
 import java.io.IOException;

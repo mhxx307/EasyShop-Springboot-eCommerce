@@ -41,6 +41,8 @@ public class SpringSecurity {
 	@SuppressWarnings("removal")
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		int cookieExpiredDate = 7 * 24 * 60 * 60; // 7 days
+		
 		http.authorizeHttpRequests(auth -> {
 			try {
 				auth
@@ -49,10 +51,11 @@ public class SpringSecurity {
 				.and()
 				.formLogin(form -> form.loginPage("/login").permitAll())
 				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll());
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		});
+		}).rememberMe(me -> me.key("BmKrj8wHOI_1234567890").tokenValiditySeconds(cookieExpiredDate));
 
 		return http.build();
 	}

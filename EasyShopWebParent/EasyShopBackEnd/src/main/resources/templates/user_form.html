@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-    <head th:replace="fragments :: page_head('Form - EasyShop Admin')" />
+    <head th:replace="fragments :: page_head(${pageTitle})" />
     <body>
         <div class="container-fluid">
             <div th:replace="navigation :: menu" />
+            
             <div>
                 <h2>Manage Users | [[${pageTitle}]]</h2>
             </div>
