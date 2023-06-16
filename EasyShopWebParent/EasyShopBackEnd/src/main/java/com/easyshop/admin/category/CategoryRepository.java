@@ -11,10 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.easyshop.common.entity.Category;
-import com.easyshop.common.entity.User;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<User, Integer> {
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
 	@Query("SELECT c FROM Category c WHERE c.parent.id is NULL")
 	public List<Category> findRootCategories(Sort sort);
 
