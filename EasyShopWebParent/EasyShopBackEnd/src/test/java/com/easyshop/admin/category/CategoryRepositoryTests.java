@@ -25,30 +25,32 @@ public class CategoryRepositoryTests {
 	
 	@Test
 	public void testCreateRootCategory() {
-		Category category = new Category();
-		category.setName("Electronics");
+		Category category = new Category("Electronics");
 		Category savedCategory = categoryRepository.save(category);
+		System.out.println(savedCategory);
 		
 		assertThat(savedCategory.getId()).isGreaterThan(0);
 	}
 	
 	@Test
 	public void testCreateSubCategory() {
-		Category parent = new Category();
-		parent.setId(1);
-		
-		Category subCategory = new Category();
-		subCategory.setName("iPhone");
-		subCategory.setParent(parent);
-		
+		Category parent = categoryRepository.findById(3).get();
+//		Category parent = new Category(1);
+		Category subCategory = new Category("Memory", parent);
 		Category savedCategory = categoryRepository.save(subCategory);
 		
-		assertThat(savedCategory.getId()).isGreaterThan(0);
+//		Category laptops = new Category("Desktops", parent);
+//		Category components = new Category("Computer components", parent);
+//		Category cameras = new Category("Cameras", parent);
+//		Category smartphones = new Category("Smartphones", parent);
+//		categoryRepository.saveAll(List.of(cameras, smartphones));
+		
+		assertThat(savedCategory.getId()).isGreaterThan(0);	
 	}
 	
 	@Test
 	public void testGetCategory() {
-		Category category = categoryRepository.findById(2).get();
+		Category category = categoryRepository.findById(1).get();
 		System.out.println(category.getName());
 		
 		Set<Category> children = category.getChildren();
@@ -107,7 +109,6 @@ public class CategoryRepositoryTests {
 		assertThat(category).isNotNull();
 		assertThat(category.getName()).isEqualTo(name);
 	}
-	
 	
 	@Test
 	public void testFindByAlias() {
