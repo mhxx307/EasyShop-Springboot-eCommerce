@@ -11,6 +11,25 @@
                 <a th:href="@{/categories/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
                 <a th:href="@{/categories/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
             </div>
+            
+            <div th:if="${message != null}" class="alert alert-success text-center">[[${message}]]</div>
+
+            <div>
+                <form th:action="@{/users/page/1}" class="form-inline m-3">
+                    <input type="hidden" name="sortField" th:value="${sortField}" />
+                    <input type="hidden" name="sortDir" th:value="${sortDir}" />
+                    Filter: &nbsp;
+                    <input type="search" name="keyword" th:value="${keyword}" required class="form-control" />
+                    &nbsp;&nbsp;
+                    <button type="submit" class="btn btn-primary" value="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-secondary" value="Clear" onclick="clearFilter()">
+                        <i class="fas fa-eraser"></i>
+                    </button>
+                </form>
+            </div>
 
             <!--<div th:replace="fragments :: search_form_and_message" />-->
 

@@ -63,6 +63,55 @@ public class CategoryService {
 		}
 	}
 
+	public Category save(Category category) {
+		Category parent = category.getParent();
+		if (parent != null) {
+			String allParentIds = parent.getAllParentIDs() == null ? "-" : parent.getAllParentIDs();
+			allParentIds += String.valueOf(parent.getId()) + "-";
+			category.setAllParentIDs(allParentIds);
+		}
+
+		return categoryRepository.save(category);
+	}
+
+	public List<Category> listCategoriesUsedInForm() {
+		List<Category> categoriesUsedInForm = new ArrayList<>();
+		Iterable<Category> categoriesInDB = categoryRepository.findAll();
+
+		for (Category category : categoriesInDB) {
+			if (category.getParent() == null) {
+				categoriesUsedInForm.add(Category.copyIdAndName(category));
+
+				Set<Category> children = category.getChildren();
+
+				for (Category subCategory : children) {
+					String name = "--" + subCategory.getName();
+					categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
+					listChildren(categoriesUsedInForm, subCategory, 1);
+				}
+			}
+		}
+
+		return categoriesUsedInForm;
+	}
+
+	private void listChildren(List<Category> categoriesUsedInForm, Category parent, int subLevel) {
+		int newSubLevel = subLevel + 1;
+		Set<Category> children = parent.getChildren();
+
+		for (Category subCategory : children) {
+			String name = "";
+			for (int i = 0; i < newSubLevel; i++) {
+				name += "--";
+			}
+			name += subCategory.getName();
+
+			categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
+
+			listChildren(categoriesUsedInForm, subCategory, newSubLevel);
+		}
+	}
+
 	private List<Category> listHierarchicalCategories(List<Category> rootCategories, String sortDir) {
 		List<Category> hierarchicalCategories = new ArrayList<>();
 
@@ -101,21 +150,10 @@ public class CategoryService {
 
 	}
 
-	public Category save(Category category) {
-		Category parent = category.getParent();
-		if (parent != null) {
-			String allParentIds = parent.getAllParentIDs() == null ? "-" : parent.getAllParentIDs();
-			allParentIds += String.valueOf(parent.getId()) + "-";
-			category.setAllParentIDs(allParentIds);
-		}
-
-		return categoryRepository.save(category);
-	}
-	
 	protected SortedSet<Category> sortSubCategories(Set<Category> children) {
 		return sortSubCategories(children, "asc");
 	}
-	
+
 	private SortedSet<Category> sortSubCategories(Set<Category> children, String sortDir) {
 		SortedSet<Category> sortedChildren = new TreeSet<>(new Comparator<Category>() {
 			@Override
@@ -127,47 +165,9 @@ public class CategoryService {
 				}
 			}
 		});
-		
+
 		sortedChildren.addAll(children);
-		
+
 		return sortedChildren;
-	}
-	
-	public List<Category> listCategoriesUsedInForm() {
-		List<Category> categoriesUsedInForm = new ArrayList<>();
-		Iterable<Category> categoriesInDB = categoryRepository.findAll();
-		
-		for (Category category : categoriesInDB) {
-			if (category.getParent() == null) {
-				categoriesUsedInForm.add(new Category(category.getName()));
-				
-				Set<Category> children = category.getChildren();
-				
-				for (Category subCategory : children) {
-					String name = "--" + subCategory.getName();
-					categoriesUsedInForm.add(new Category(name));
-					listChildren(categoriesUsedInForm, subCategory, 1);
-				}
-			}
-		}
-		
-		return categoriesUsedInForm;
-	}
-	
-	private void listChildren(List<Category> categoriesUsedInForm, Category parent, int subLevel) {
-		int newSubLevel = subLevel + 1;
-		Set<Category> children = parent.getChildren();
-		
-		for (Category subCategory : children) {
-			String name = "";
-			for (int i = 0; i < newSubLevel; i++) {				
-				name += "--";
-			}
-			name += subCategory.getName();
-			
-			categoriesUsedInForm.add(new Category(name));
-			
-			listChildren(categoriesUsedInForm, subCategory, newSubLevel);
-		}		
 	}
 }
