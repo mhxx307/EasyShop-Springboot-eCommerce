@@ -47,6 +47,7 @@ public class SpringSecurity {
 			try {
 				auth
 				.requestMatchers("/users/**").hasAuthority("Admin")
+				.requestMatchers("/categories/**").hasAnyAuthority("Admin", "Editor")
 				.anyRequest()
 				.authenticated()
 				.and()
