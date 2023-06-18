@@ -50,7 +50,7 @@
                         <tr th:each="cat : ${listCategories}">
                             <td>[[${cat.id}]]</td>
                             <td>
-                                <!--<img th:src="@{${cat.imagePath}}" style="width: 100px" class="img-fluid"/>-->
+                                <img th:src="@{${cat.imagePath}}" style="width: 100px" class="img-fluid"/>
                             </td>
                             <td>[[${cat.name}]]</td>
                             <td class="hideable-column">[[${cat.alias}]]</td>
@@ -73,7 +73,7 @@
             <div class="less-details">
                 <div th:each="cat : ${listCategories}" class="row m-1">
                     <div class="col-4">
-                        <!--<img th:src="@{${cat.imagePath}}" style="width: 100px" class="img-fluid"/>-->
+                       <img th:src="@{${cat.imagePath}}" style="width: 100px" class="img-fluid"/>
                     </div>
                     <div class="col-8">
                         <div>[[${cat.name}]]</div>

@@ -67,7 +67,7 @@
                                 id="fileImage"
                                 name="fileImage"
                                 accept="image/png, image/jpeg"
-                                th:required="${category.image == null}"
+                                th:required="${category.imagePath == null}"
                                 class="mb-2"
                             />
 
@@ -75,7 +75,7 @@
                                 <img
                                     id="thumbnail"
                                     alt="Image preview"
-                                    th:src="@{/images/image-thumbnail.png}"
+                                    th:src="@{${category.imagePath}}"
                                     class="img-fluid"
                                 />
                             </div>

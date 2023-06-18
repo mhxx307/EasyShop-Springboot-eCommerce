@@ -75,15 +75,37 @@ public class CategoryController {
 	
 	@PostMapping("/save")
 	public String saveCategory(Category category, @RequestParam("fileImage") MultipartFile 	multipartFile, RedirectAttributes redirectAttributes) throws IOException {
-		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		category.setImage(fileName);
-		
-		Category savedCategory = categoryService.save(category);
-		String uploadDir = "../category-images/" + savedCategory.getId();
-		FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-		
+		if (!multipartFile.isEmpty()) {
+			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			category.setImage(fileName);
+			
+			Category savedCategory = categoryService.save(category);
+			String uploadDir = "../category-images/" + savedCategory.getId();
+			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+		} else {
+			categoryService.save(category);
+		}
+
 		redirectAttributes.addFlashAttribute("message", "The category has been saved successfully");
-		
 		return "redirect:/categories";
 	}
+	
+	@GetMapping("/edit/{id}")
+	public String editCategory(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+		try {
+			Category category = categoryService.findById(id);
+			List<Category> listCategories = categoryService.listCategoriesUsedInForm();
+			
+			model.addAttribute("listCategories", listCategories);
+			model.addAttribute("category", category);
+			model.addAttribute("pageTitle", "Update category with ID (" + id + ")");
+			
+			return "category/category_form";
+		} catch (CategoryNotFoundException e) {
+			redirectAttributes.addFlashAttribute("message", e.getMessage());
+			return "redirect:/categories";
+		}
+	}
+	
+	
 }

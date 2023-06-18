@@ -18,13 +18,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -114,5 +112,12 @@ public class Category {
 
 	@Transient
 	private boolean hasChildren;
+	
+	@Transient
+	public String getImagePath() {
+		if (this.id == null) return "/images/default-thumbnail.png";
+		
+		return "/category-images/" + this.id + "/" + this.image;
+	}
 
 }

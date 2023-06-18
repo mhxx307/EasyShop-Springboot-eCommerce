@@ -2,6 +2,7 @@ package com.easyshop.admin.category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -62,56 +63,7 @@ public class CategoryService {
 			return listHierarchicalCategories(rootCategories, sortDir);
 		}
 	}
-
-	public Category save(Category category) {
-		Category parent = category.getParent();
-		if (parent != null) {
-			String allParentIds = parent.getAllParentIDs() == null ? "-" : parent.getAllParentIDs();
-			allParentIds += String.valueOf(parent.getId()) + "-";
-			category.setAllParentIDs(allParentIds);
-		}
-
-		return categoryRepository.save(category);
-	}
-
-	public List<Category> listCategoriesUsedInForm() {
-		List<Category> categoriesUsedInForm = new ArrayList<>();
-		Iterable<Category> categoriesInDB = categoryRepository.findAll();
-
-		for (Category category : categoriesInDB) {
-			if (category.getParent() == null) {
-				categoriesUsedInForm.add(Category.copyIdAndName(category));
-
-				Set<Category> children = category.getChildren();
-
-				for (Category subCategory : children) {
-					String name = "--" + subCategory.getName();
-					categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
-					listChildren(categoriesUsedInForm, subCategory, 1);
-				}
-			}
-		}
-
-		return categoriesUsedInForm;
-	}
-
-	private void listChildren(List<Category> categoriesUsedInForm, Category parent, int subLevel) {
-		int newSubLevel = subLevel + 1;
-		Set<Category> children = parent.getChildren();
-
-		for (Category subCategory : children) {
-			String name = "";
-			for (int i = 0; i < newSubLevel; i++) {
-				name += "--";
-			}
-			name += subCategory.getName();
-
-			categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
-
-			listChildren(categoriesUsedInForm, subCategory, newSubLevel);
-		}
-	}
-
+	
 	private List<Category> listHierarchicalCategories(List<Category> rootCategories, String sortDir) {
 		List<Category> hierarchicalCategories = new ArrayList<>();
 
@@ -169,5 +121,62 @@ public class CategoryService {
 		sortedChildren.addAll(children);
 
 		return sortedChildren;
+	}
+
+	public Category save(Category category) {
+		Category parent = category.getParent();
+		if (parent != null) {
+			String allParentIds = parent.getAllParentIDs() == null ? "-" : parent.getAllParentIDs();
+			allParentIds += String.valueOf(parent.getId()) + "-";
+			category.setAllParentIDs(allParentIds);
+		}
+
+		return categoryRepository.save(category);
+	}
+
+	public List<Category> listCategoriesUsedInForm() {
+		List<Category> categoriesUsedInForm = new ArrayList<>();
+		Iterable<Category> categoriesInDB = categoryRepository.findAll();
+
+		for (Category category : categoriesInDB) {
+			if (category.getParent() == null) {
+				categoriesUsedInForm.add(Category.copyIdAndName(category));
+
+				Set<Category> children = category.getChildren();
+
+				for (Category subCategory : children) {
+					String name = "--" + subCategory.getName();
+					categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
+					listSubCategoriesUsedInForm(categoriesUsedInForm, subCategory, 1);
+				}
+			}
+		}
+
+		return categoriesUsedInForm;
+	}
+
+	private void listSubCategoriesUsedInForm(List<Category> categoriesUsedInForm, Category parent, int subLevel) {
+		int newSubLevel = subLevel + 1;
+		Set<Category> children = parent.getChildren();
+
+		for (Category subCategory : children) {
+			String name = "";
+			for (int i = 0; i < newSubLevel; i++) {
+				name += "--";
+			}
+			name += subCategory.getName();
+
+			categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name));
+
+			listSubCategoriesUsedInForm(categoriesUsedInForm, subCategory, newSubLevel);
+		}
+	}
+	
+	public Category findById(Integer id) throws CategoryNotFoundException {
+		try {
+			return categoryRepository.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new CategoryNotFoundException("Could not find any categpry with ID " + id);
+		}
 	}
 }
