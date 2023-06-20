@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+    <head th:fragment="page_head(title)">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0" />
+        <title>[[${title}]]</title>
+        <!-- th:href @{} to auto injection the context path, ex:localhost:8080/EasyshopAdmin/webjars...-->
+
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/styles.css}" />
+
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    </head>
+    <body>
+        <!-- modal fragment -->
+        <div class="modal fade text-center" id="modalDialog" th:fragment="modal_dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalTitle">Warning</h4>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            style="outline: none"
+                            aria-label="Close"
+                        >
+                            &times;
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <span id="modalBody"></span>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

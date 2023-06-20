@@ -4,7 +4,7 @@
     <body>
         <div class="container-fluid">
             <div th:replace="navigation :: menu" />
-            
+
             <div>
                 <h2>Manage Users | [[${pageTitle}]]</h2>
             </div>
@@ -143,42 +143,12 @@
                 </div>
             </form>
 
-            <div class="modal fade text-center" id="modalDialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="modalTitle">Warning</h4>
-                            <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                style="outline: none"
-                                aria-label="Close"
-                            >
-                                &times;
-                            </button>
-                        </div>
-
-                        <div class="modal-body">
-                            <span id="modalBody"></span>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close">
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- <div th:replace="modal_fragments :: modal_dialog"></div> -->
+            <div th:replace="modal_fragments :: modal_dialog"></div>
 
             <div th:replace="fragments :: footer" />
         </div>
 
         <script type="text/javascript">
-
             var moduleURL = "[[@{/users}]]";
 
             function checkEmailUnique(form) {
@@ -201,12 +171,6 @@
                 });
 
                 return false;
-            }
-
-            function showModalDialog(title, message) {
-                $("#modalTittle").text(title);
-                $("#modalBody").text(message);
-                $("#modalDialog").modal();
             }
         </script>
         <script th:src="@{/js/common_form.js}"></script>

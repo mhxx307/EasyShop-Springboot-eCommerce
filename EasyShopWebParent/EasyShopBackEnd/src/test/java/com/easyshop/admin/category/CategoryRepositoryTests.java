@@ -105,6 +105,7 @@ public class CategoryRepositoryTests {
 	public void testFindByName() {
 		String name = "Computers";
 		Category category = categoryRepository.findByName(name);
+		System.out.println(category);
 		
 		assertThat(category).isNotNull();
 		assertThat(category.getName()).isEqualTo(name);

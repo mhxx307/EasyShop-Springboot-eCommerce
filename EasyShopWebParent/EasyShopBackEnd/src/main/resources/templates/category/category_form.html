@@ -14,6 +14,7 @@
                 style="max-width: 500px; margin: 0 auto"
                 enctype="multipart/form-data"
                 th:object="${category}"
+                onsubmit="return checkUnique(this)"
             >
                 <input type="hidden" th:field="*{id}" />
                 <div class="border border-secondary rounded p-3">
@@ -96,7 +97,7 @@
                 </div>
             </form>
 
-            <!-- <div th:replace="modal_fragments :: modal_dialog"></div> -->
+            <div th:replace="modal_fragments :: modal_dialog"></div>
 
             <div th:replace="fragments :: footer"></div>
         </div>
@@ -116,7 +117,7 @@
                 params = { id: catId, name: catName, alias: catAlias, _csrf: csrfValue };
 
                 $.post(url, params, function (response) {
-                    if (response == "OK") {
+                    if (response == "Ok") {
                         form.submit();
                     } else if (response == "DuplicateName") {
                         showWarningModal("There is another category having same name " + catName);
@@ -131,6 +132,8 @@
 
                 return false;
             }
+
+            
         </script>
         <script th:src="@{/js/common_form.js}"></script>
     </body>

@@ -112,12 +112,26 @@ public class Category {
 
 	@Transient
 	private boolean hasChildren;
-	
+
 	@Transient
 	public String getImagePath() {
-		if (this.id == null) return "/images/default-thumbnail.png";
-		
+		if (this.id == null)
+			return "/images/default-thumbnail.png";
+
 		return "/category-images/" + this.id + "/" + this.image;
+	}
+
+	public Category(Integer id, String name, String alias) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.alias = alias;
+	}
+
+	@Override
+	public String toString() {
+		return "Category [alias=" + alias + ", enabled=" + enabled + ", id=" + id + ", image=" + image + ", name="
+				+ name + "]";
 	}
 
 }
