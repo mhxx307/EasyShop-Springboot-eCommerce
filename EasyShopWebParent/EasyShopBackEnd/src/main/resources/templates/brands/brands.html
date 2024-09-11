@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Brands - EasyShop Admin')" />
+<body>
+    <div class="container-fluid">
+        <div th:replace="navigation :: menu"></div>
+        
+        <div>
+            <h2>Manage Brands</h2>
+            
+            <a th:href="@{/brands/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+            <a th:href="@{/brands/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+        </div>
+        
+        <div th:if="${message != null}" class="alert alert-success text-center">
+            [[${message}]]
+        </div>
+        
+        <div>
+            <table class="table table-bordered table-striped table-hover table-responsive-xl">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Brand ID</th>
+                        <th>Logo</th>
+                        <th>Brand Name</th>
+                        <th>Categories</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="brand : ${listBrands}">
+                        <td>[[${brand.id}]]</td>
+                        <td>
+                            <!--<img th:src="@{${brand.logoPath}}" style="width: 100px" class="img-fluid"/>-->
+                        </td>
+                        <td>[[${brand.name}]]</td>
+                        <td>
+							<th:block th:each="category, status : ${brand.categories}">
+							     <span>[[${category.name}]]</span>
+							     <span th:if="${!status.last}">, </span>
+							</th:block>
+						</td>
+                        <td>
+                            <a class="fas fa-edit fa-2x icon-green" th:href="@{'/brands/edit/' + ${brand.id}}"
+                                title="Edit this brand"></a>
+                            &nbsp; 
+                            <a class="fas fa-trash fa-2x icon-dark link-delete" 
+                                th:href="@{'/brands/delete/' + ${brand.id}}"
+                                th:brandId="${brand.id}"
+                                title="Delete this brand"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div th:replace="fragments :: footer"></div>
+    </div>
+</body>
+</html>

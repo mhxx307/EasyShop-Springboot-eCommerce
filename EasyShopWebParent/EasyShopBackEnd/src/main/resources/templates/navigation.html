@@ -17,15 +17,19 @@
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/users}" sec:authorize="hasAuthority('Admin')">Users</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/categories}" sec:authorize="hasAnyAuthority('Admin', 'Editor')">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/brands}">Brands</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/products}">Products</a>
-                        </li>
+						
+						<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+							<li class="nav-item">
+							     <a class="nav-link" th:href="@{/categories}">Categories</a>
+							</li>
+							<li class="nav-item">
+							     <a class="nav-link" th:href="@{/brands}">Brands</a>
+							</li>
+							<li class="nav-item">
+							     <a class="nav-link" th:href="@{/products}">Products</a>
+							</li>
+						</th:block>
+                        
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/customers}">Customers</a>
                         </li>

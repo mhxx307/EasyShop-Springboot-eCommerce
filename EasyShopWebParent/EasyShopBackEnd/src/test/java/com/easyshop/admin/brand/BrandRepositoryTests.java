@@ -15,7 +15,7 @@ import com.easyshop.common.entity.Category;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-//@Rollback(false)
+@Rollback(false)
 public class BrandRepositoryTests {
 	
 	@Autowired
