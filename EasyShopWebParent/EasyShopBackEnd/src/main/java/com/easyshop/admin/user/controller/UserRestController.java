@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.easyshop.admin.user.UserServiceImpl;
 
 /* why using rest controller ? Because checkDuplicatedEmail function using an email param (already @param) as variable and this variable
-*  is incomming httpRequest, @RestController has @RequestBody in detail and this annotation helping convert httpReuqest(json) to java object
+*  is incomming httpRequest, @RestController has @RequestBody in detail and this annotation helping convert httpRequest(json) to java object
 */
 @RestController
 public class UserRestController {

@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
 import com.easyshop.common.entity.Role;
@@ -30,12 +31,16 @@ public class UserRepositoryTests {
 	
 	@Test
 	public void testCreateNewUserWithOneRole() {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		Role roleAdmin = entityManager.find(Role.class, 1);
 		User userQuan = new User();
-		userQuan.setEmail("minhquan.lavo@gmail.com");
+		userQuan.setEmail("minhquan.lavo1@gmail.com");
 		userQuan.setFirstName("Quan");
 		userQuan.setLastName("La");
-		userQuan.setPassword("hellohacker");
+		
+		String password = "raw123456";
+		String encodeedPassword = passwordEncoder.encode(password);
+		userQuan.setPassword(encodeedPassword);
 		
 		userQuan.addRole(roleAdmin);
 		
@@ -46,9 +51,12 @@ public class UserRepositoryTests {
 	
 	@Test
 	public void testCreateNewUserWithTwoRoles() {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		User userRavi = new User();
 		userRavi.setEmail("ravi@gmail.com");
-		userRavi.setPassword("ravi2023");
+		String password = "ravi2023";
+		String encodeedPassword = passwordEncoder.encode(password);
+		userRavi.setPassword(encodeedPassword);
 		userRavi.setFirstName("Ravi");
 		userRavi.setLastName("Kumar");
 		userRavi.setEnabled(true);
