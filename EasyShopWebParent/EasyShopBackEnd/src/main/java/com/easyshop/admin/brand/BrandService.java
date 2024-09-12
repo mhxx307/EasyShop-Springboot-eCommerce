@@ -21,5 +21,19 @@ public class BrandService {
 	public Brand save(Brand brand) {
 		return repo.save(brand);
 	}
+	
+	public Brand get(Integer id) throws BrandNotFoundException {
+		return repo.findById(id).get();
+	}
+	
+	public void delete(Integer id) throws BrandNotFoundException {
+		Boolean isExists = repo.existsById(id);
+		
+		if (!isExists) {
+			throw new BrandNotFoundException("Could not found any brand with ID " + id);
+		}
+		
+		repo.deleteById(id);
+	}
 
 }
