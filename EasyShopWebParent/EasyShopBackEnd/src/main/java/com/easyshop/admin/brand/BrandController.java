@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +18,6 @@ import com.easyshop.admin.category.CategoryService;
 import com.easyshop.admin.utils.FileUploadUtil;
 import com.easyshop.common.entity.Brand;
 import com.easyshop.common.entity.Category;
-
-import io.micrometer.common.util.StringUtils;
 
 @Controller
 @RequestMapping("/brands")
@@ -102,4 +99,5 @@ public class BrandController {
 		
 		return "redirect:/brands";
 	}
+	
 }

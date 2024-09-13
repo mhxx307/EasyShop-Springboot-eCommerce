@@ -7,5 +7,5 @@ import com.easyshop.common.entity.Brand;
 
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Integer> {
-
+	Brand findByName(String name);
 }
