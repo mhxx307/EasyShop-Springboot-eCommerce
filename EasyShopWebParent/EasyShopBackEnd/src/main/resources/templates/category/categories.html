@@ -12,26 +12,9 @@
                 <a th:href="@{/categories/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
             </div>
             
-            <div th:if="${message != null}" class="alert alert-success text-center">[[${message}]]</div>
+            <!--<div th:if="${message != null}" class="alert alert-success text-center">[[${message}]]</div>-->
 
-            <div>
-                <form th:action="@{/users/page/1}" class="form-inline m-3">
-                    <input type="hidden" name="sortField" th:value="${sortField}" />
-                    <input type="hidden" name="sortDir" th:value="${sortDir}" />
-                    Filter: &nbsp;
-                    <input type="search" name="keyword" th:value="${keyword}" required class="form-control" />
-                    &nbsp;&nbsp;
-                    <button type="submit" class="btn btn-primary" value="Search">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    &nbsp;&nbsp;
-                    <button type="button" class="btn btn-secondary" value="Clear" onclick="clearFilter()">
-                        <i class="fas fa-eraser"></i>
-                    </button>
-                </form>
-            </div>
-
-            <!--<div th:replace="fragments :: search_form_and_message" />-->
+            <div th:replace="fragments :: search_form_and_message" />
 
             <div class="full-details">
                 <table class="table table-bordered table-striped table-hover table-responsive-xl">
@@ -55,16 +38,14 @@
                             <td>[[${cat.name}]]</td>
                             <td class="hideable-column">[[${cat.alias}]]</td>
                             <td>
-                                <!--<div th:replace="fragments :: status(${cat.enabled}, 'category', '/categories/' + ${cat.id})" />-->
-                                [[${cat.enabled}]]
+                                <div th:replace="fragments :: status(${cat.enabled}, 'category', '/categories/' + ${cat.id})" />
+                                <!--[[${cat.enabled}]]-->
                             </td>
-                            <td>
-                                <div th:replace="fragments :: edit('category', '/categories/edit/' + ${cat.id})" />
-                                &nbsp;
-                                <div
-                                    th:replace="fragments :: delete('category', ${cat.id}, '/categories/delete/' + ${cat.id}, ${!cat.hasChildren})"
-                                />
-                            </td>
+							<td>
+							    <div th:replace="fragments :: edit('category', '/categories/edit/' + ${cat.id})" />
+							    &nbsp;
+							    <div th:replace="fragments :: delete('category', ${cat.id}, '/categories/delete/' + ${cat.id}, ${!cat.hasChildren})" />
+							</td>
                         </tr>
                     </tbody>
                 </table>
@@ -78,7 +59,7 @@
                     <div class="col-8">
                         <div>[[${cat.name}]]</div>
                         <div class="mt-2">
-                            <!--<div th:replace="fragments :: status(${cat.enabled}, 'category', '/categories/' + ${cat.id})" />-->
+                            <div th:replace="fragments :: status(${cat.enabled}, 'category', '/categories/' + ${cat.id})" />
                             &nbsp;
                             <div th:replace="fragments :: edit('category', '/categories/edit/' + ${cat.id})" />
                             &nbsp;
@@ -93,16 +74,18 @@
 
             <div th:if="${keyword != null}" class="text-center">
                 <span>Search result does not show categories in hierarchical form</span>
-                <!-- <div th:replace="fragments :: pagination('categories')" /> -->
+                <div th:replace="fragments :: pagination('categories')" />
             </div>
 
             <th:block th:unless="${keyword != null}" />
-            <!--<div th:replace="fragments :: pagination('top-level categories')"></div> -->
+            <div th:replace="fragments :: pagination('top-level categories')"></div>
 
             <div th:replace="fragments :: footer" />
+			
+			<div th:replace="modal_fragments :: confirm_modal" />
         </div>
 
-        <!-- <script th:src="@{/js/common_list.js}"></script>
+        <script th:src="@{/js/common_list.js}"></script>
         <script type="text/javascript">
             moduleURL = "[[@{/categories}]]";
 
@@ -112,6 +95,6 @@
                     showDeleteConfirmModal($(this), "category");
                 });
             });
-        </script> -->
+        </script>
     </body>
 </html>
