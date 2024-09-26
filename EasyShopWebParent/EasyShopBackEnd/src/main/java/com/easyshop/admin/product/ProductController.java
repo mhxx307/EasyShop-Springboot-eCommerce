@@ -65,4 +65,15 @@ public class ProductController {
 		redirectAttributes.addFlashAttribute("message", "The product status has been updated successfully.");
 		return "redirect:/products";
 	}
+
+	@GetMapping("/delete/{id}")
+	public String deleteProduct(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+		try {
+			productService.delete(id);
+			redirectAttributes.addFlashAttribute("message", "The product has been deleted successfully.");
+		} catch (ProductNotFoundException e) {
+			redirectAttributes.addFlashAttribute("message", e.getMessage());
+		}
+		return "redirect:/products";
+	}
 }

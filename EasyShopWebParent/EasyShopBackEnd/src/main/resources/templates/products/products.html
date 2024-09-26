@@ -62,9 +62,19 @@
             </table>
 
             <!--<div th:replace="fragments :: pagination('Products')"></div>-->
-
+            <div th:replace="modal_fragments :: confirm_modal"></div>
             <div th:replace="fragments :: footer"></div>
         </div>
         <script th:src="@{/js/common.js}"></script>
+        <script th:src="@{/js/common_list.js}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var moduleURL = "/products/delete/";
+                $("#yesButton").on("click", function (e) {
+                    e.preventDefault();
+                    showDeleteConfirmModal($(this), "product");
+                });
+            });
+        </script>
     </body>
 </html>

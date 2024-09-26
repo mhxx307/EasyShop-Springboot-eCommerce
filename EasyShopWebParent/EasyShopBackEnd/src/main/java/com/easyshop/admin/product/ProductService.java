@@ -66,4 +66,12 @@ public class ProductService {
 	public void updateProductEnabledStatus(Integer id, boolean enabled) {
 		productRepository.updateEnabledStatus(id, enabled);
 	}
+
+	public void delete(Integer id) throws ProductNotFoundException {
+		Long countById = productRepository.countById(id);
+		if (countById == null || countById == 0) {
+			throw new ProductNotFoundException("Could not find any product with ID " + id);
+		}
+		productRepository.deleteById(id);
+	}
 }
