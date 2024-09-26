@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<head th:replace="fragments :: page_head('Products - EasyShop Admin')" />
-<!--<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
-<script th:src="@{/richtext/jquery.richtext.min.js}"></script>-->
+	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+	<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
+	<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
 </head>
 
 <body>
@@ -39,14 +39,14 @@
 						<div th:replace="products/product_overview :: content"></div>
 					</div>
 					<div class="tab-pane" id="description" role="tabpanel">
-						<!--<th:block th:if="${isReadOnlyForSalesperson}">
+						<th:block th:if="${isReadOnlyForSalesperson}">
 							<div
 								th:replace="products/product_description_read_only :: content"></div>
 						</th:block>
 
 						<th:block th:unless="${isReadOnlyForSalesperson}">
 							<div th:replace="products/product_description :: content"></div>
-						</th:block>-->
+						</th:block>
 					</div>
 					<div class="tab-pane" id="images" role="tabpanel">
 						<!--<th:block th:if="${isReadOnlyForSalesperson}">
@@ -74,14 +74,13 @@
 
 					</div>
 					<div class="tab-pane p-3" id="shipping" role="tabpanel">
-						<!--<th:block th:if="${isReadOnlyForSalesperson}">
+						<th:block th:if="${isReadOnlyForSalesperson}">
 							<div th:replace="products/product_shipping_read_only :: content"></div>
 						</th:block>
 
 						<th:block th:unless="${isReadOnlyForSalesperson}">
 							<div th:replace="products/product_shipping :: content"></div>
-						</th:block>-->
-						shipping
+						</th:block>
 					</div>
 				</div>
 			</div>
@@ -107,7 +106,12 @@
 			
 		var dropdownBrands = $("#brand")
 		var dropdownCategories = $("#category")
+		
 		$(document).ready(function() {
+			
+			$('#shortDescription').richText();
+			$('#fullDescription').richText();
+			
 			dropdownBrands.change(() => {
 				dropdownCategories.empty()
 				getCategories()
