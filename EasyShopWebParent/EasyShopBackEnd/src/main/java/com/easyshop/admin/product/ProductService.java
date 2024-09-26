@@ -63,20 +63,7 @@ public class ProductService {
 		return "OK";
 	}
 
-
-//	public void delete(Integer id) throws ProductNotFoundException {
-//		Long countById = productRepository.countById(id);
-//		if (countById == null || countById == 0) {
-//			throw new ProductNotFoundException("Could not find any product with ID " + id);
-//		}
-//		productRepository.deleteById(id);
-//	}
-//
-//	public Product get(Integer id) throws ProductNotFoundException {
-//		try {
-//			return productRepository.findById(id).get();
-//		} catch (NoSuchElementException ex) {
-//			throw new ProductNotFoundException("Could not find any product with ID " + id);
-//		}
-//	}
+	public void updateProductEnabledStatus(Integer id, boolean enabled) {
+		productRepository.updateEnabledStatus(id, enabled);
+	}
 }

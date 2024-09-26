@@ -1,58 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments :: page_head('Products - EasyShop Admin', 'none')" />
-<body>
-    <div class="container-fluid">
-        <div th:replace="navigation :: menu"></div>
+    <head
+        th:replace="fragments :: page_head('Products - EasyShop Admin', 'none')"
+    />
+    <body>
+        <div class="container-fluid">
+            <div th:replace="navigation :: menu"></div>
 
-        <div>
-            <h2>Manage Products</h2>
-            <div class="mb-3">
-				<a th:href="@{/products/new}"
-								class="fas fa-folder-plus fa-2x icon-dark mr-2"></a> 
-				<a th:href="@{/products/export/csv}"
-								class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+            <div>
+                <h2>Manage Products</h2>
+                <div class="mb-3">
+                    <a
+                        th:href="@{/products/new}"
+                        class="fas fa-folder-plus fa-2x icon-dark mr-2"
+                    ></a>
+                    <a
+                        th:href="@{/products/export/csv}"
+                        class="fas fa-file-csv fa-2x icon-dark mr-2"
+                    ></a>
+                </div>
             </div>
+
+            <div th:replace="fragments :: search_form_and_message()"></div>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Main Image</th>
+                        <th>Product Name</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Enabled</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.id}"></td>
+                        <td>
+                            <!--<img th:src="@{${product.mainImagePath}}" alt="Product Image" style="width: 100px;" />-->
+                        </td>
+                        <td th:text="${product.name}"></td>
+                        <td th:text="${product.brand.name}"></td>
+                        <td th:text="${product.category.name}"></td>
+                        <td>
+                            <div
+                                th:replace="fragments :: status(${product.enabled}, 'product', '/products/' + ${product.id})"
+                            ></div>
+                        </td>
+                        <td>
+                            <div
+                                th:replace="fragments :: edit('Product', '/products/edit/' + ${product.id})"
+                            ></div>
+                            <div
+                                th:replace="fragments :: delete('Product', product.id, '/products/delete/' + ${product.id}, true)"
+                            ></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!--<div th:replace="fragments :: pagination('Products')"></div>-->
+
+            <div th:replace="fragments :: footer"></div>
         </div>
-
-        <div th:replace="fragments :: search_form_and_message()"></div>
-
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Main Image</th>
-                    <th>Product Name</th>
-                    <th>Brand</th>
-                    <th>Category</th>
-                    <th>Enabled</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="product : ${products}">
-                    <td th:text="${product.id}"></td>
-                    <td>
-                        <!--<img th:src="@{${product.mainImagePath}}" alt="Product Image" style="width: 100px;" />-->
-                    </td>
-                    <td th:text="${product.name}"></td>
-                    <td th:text="${product.brand.name}"></td>
-                    <td th:text="${product.category.name}"></td>
-                    <td>
-                       <div th:replace="fragments :: status(${product.enabled}, 'product', '/products/' + ${product.id})"></div>
-                    </td>
-                    <td>
-						<div th:replace="fragments :: edit('Product', '/products/edit/' + ${product.id})"></div>
-                        <div th:replace="fragments :: delete('Product', product.id, '/products/delete/' + ${product.id}, true)"></div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!--<div th:replace="fragments :: pagination('Products')"></div>-->
-
-        <div th:replace="fragments :: footer"></div>
-    </div>
-    <script th:src="@{/js/common.js}"></script>
-</body>
+        <script th:src="@{/js/common.js}"></script>
+    </body>
 </html>
