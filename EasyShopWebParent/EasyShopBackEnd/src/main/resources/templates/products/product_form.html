@@ -39,14 +39,14 @@
 						<div th:replace="products/product_overview :: content"></div>
 					</div>
 					<div class="tab-pane" id="description" role="tabpanel">
-						<th:block th:if="${isReadOnlyForSalesperson}">
+						<!--<th:block th:if="${isReadOnlyForSalesperson}">
 							<div
 								th:replace="products/product_description_read_only :: content"></div>
 						</th:block>
 
 						<th:block th:unless="${isReadOnlyForSalesperson}">
 							<div th:replace="products/product_description :: content"></div>
-						</th:block>
+						</th:block>-->
 					</div>
 					<div class="tab-pane" id="images" role="tabpanel">
 						<!--<th:block th:if="${isReadOnlyForSalesperson}">
@@ -100,14 +100,36 @@
 	<script type="text/javascript">
 		MAX_FILE_SIZE = 502400; // 500KB
 
-		moduleURL = "[[@{/products}]]";
-		brandModuleURL = "[[@{/brands}]]";
-		defaultImageThumbnailSrc = "[[@{/images/image-thumbnail.png}]]";
-		checkUniqueUrl = "[[@{/products/check_unique}]]";
+		var productModuleURL = "[[@{/products}]]";
+		var brandModuleURL = "[[@{/brands}]]";
+		var defaultImageThumbnailSrc = "[[@{/images/image-thumbnail.png}]]";
+		var checkUniqueUrl = "[[@{/products/check_unique}]]";
+			
+		var dropdownBrands = $("#brand")
+		var dropdownCategories = $("#category")
+		$(document).ready(function() {
+			dropdownBrands.change(() => {
+				dropdownCategories.empty()
+				getCategories()
+			})
+			getCategories()
+		})
+		
+		function getCategories() {
+			var brandId = dropdownBrands.val();
+			var url = brandModuleURL + "/" + brandId + "/categories" // brandrestcontroller mapping
+			console.log(url)
+			$.get(url, function(responseJson) {
+				console.log(responseJson);
+				$.each(responseJson, function(index, category) {
+					$("<option>").val(category.id).text(category.name).appendTo(dropdownCategories);
+				})
+			})
+		}
 
 	</script>
 	<script th:src="@{/js/common_form.js}"></script>
-	<!--	<script th:src="@{/js/product_form_overview.js}"></script>
+	<!--<script th:src="@{/js/product_form_overview.js}"></script>
 		<script th:src="@{/js/product_form_images.js}"></script>
 		<script th:src="@{/js/product_form_details.js}"></script>-->
 </body>

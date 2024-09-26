@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.easyshop.admin.brand.BrandService;
@@ -44,4 +45,12 @@ public class ProductController {
 		
 		return "products/product_form";
 	}
+    
+    @PostMapping("/save")
+    public String saveProduct(Product product) {
+    	System.out.println("Product name: " + product.getName());
+    	System.out.println("Brand id: " + product.getBrand().getId());
+    	System.out.println("Category id: " + product.getCategory().getId());
+    	return "redirect:/products";
+    }
 }
