@@ -47,10 +47,13 @@ public class ProductController {
 	}
     
     @PostMapping("/save")
-    public String saveProduct(Product product) {
+    public String saveProduct(Product product, RedirectAttributes redirectAttributes) {
     	System.out.println("Product name: " + product.getName());
     	System.out.println("Brand id: " + product.getBrand().getId());
     	System.out.println("Category id: " + product.getCategory().getId());
+
+		productService.save(product);
+		redirectAttributes.addFlashAttribute("message", "The product has been saved successfully.");
     	return "redirect:/products";
     }
 }
