@@ -8,4 +8,5 @@ import com.easyshop.common.entity.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 	public Long countById(Integer id);	
+	public Product findByName(String name);
 }

@@ -42,6 +42,28 @@ public class ProductService {
 		return productRepository.save(product);
 	}
 
+	/**
+	 * Check if the product name is unique
+	 * @param id
+	 * @param name
+	 * @return "OK" if the product name is unique, "Duplicate" if the product name is not unique
+	 */
+	public String checkUnique(Integer id, String name) {
+		boolean isCreatingNew = (id == null || id == 0);
+		Product productByName = productRepository.findByName(name);
+
+		if (isCreatingNew) {
+			if (productByName != null) return "Duplicate";
+		} else {
+			if (productByName != null && productByName.getId() != id) {
+				return "Duplicate";
+			}
+		}
+
+		return "OK";
+	}
+
+
 //	public void delete(Integer id) throws ProductNotFoundException {
 //		Long countById = productRepository.countById(id);
 //		if (countById == null || countById == 0) {

@@ -1,65 +1,116 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
+        <link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
+        <script th:src="@{/richtext/jquery.richtext.min.js}"></script>
+    </head>
 
-<head>
-	<head th:replace="fragments :: page_head(${pageTitle}, 'tag')" />
-	<link rel="stylesheet" th:href="@{/richtext/richtext.min.css}" />
-	<script th:src="@{/richtext/jquery.richtext.min.js}"></script>
-</head>
+    <body>
+        <div class="container-fluid">
+            <div th:replace="navigation :: menu"></div>
+            <div>
+                <h2>Manage Products</h2>
+            </div>
 
-<body>
-	<div class="container-fluid">
-		<div th:replace="navigation :: menu"></div>
-		<div>
-			<h2>Manage Products</h2>
-		</div>
+            <form
+                th:action="@{/products/save}"
+                method="post"
+                onsubmit="return checkUnique(this)"
+                enctype="multipart/form-data"
+                th:object="${product}"
+            >
+                <input type="hidden" th:field="*{id}" />
+                <input
+                    th:if="${product.category != null}"
+                    type="hidden"
+                    id="categoryId"
+                    th:value="${product.category.id}"
+                />
+                <div>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a
+                                class="nav-link active"
+                                data-toggle="tab"
+                                href="#overview"
+                                role="tab"
+                                >Overview</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                data-toggle="tab"
+                                href="#description"
+                                role="tab"
+                                >Description</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                data-toggle="tab"
+                                href="#images"
+                                role="tab"
+                                >Images</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                data-toggle="tab"
+                                href="#details"
+                                role="tab"
+                                >Details</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                class="nav-link"
+                                data-toggle="tab"
+                                href="#shipping"
+                                role="tab"
+                                >Shipping</a
+                            >
+                        </li>
+                    </ul>
 
-		<form th:action="@{/products/save}" method="post"
-			onsubmit="" enctype="multipart/form-data"
-			th:object="${product}">
-			<input type="hidden" th:field="*{id}" /> <input
-				th:if="${product.category != null}" type="hidden" id="categoryId"
-				th:value="${product.category.id}" />
-			<div>
-				<ul class="nav nav-tabs" id="myTab" role="tablist">
-					<li class="nav-item"><a class="nav-link active"
-						data-toggle="tab" href="#overview" role="tab">Overview</a></li>
-					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#description" role="tab">Description</a></li>
-					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#images" role="tab">Images</a></li>
-					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#details" role="tab">Details</a></li>
-					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#shipping" role="tab">Shipping</a></li>
-				</ul>
+                    <div class="tab-content">
+                        <div
+                            class="tab-pane active p-3"
+                            id="overview"
+                            role="tabpanel"
+                        >
+                            <div
+                                th:replace="products/product_overview :: content"
+                            ></div>
+                        </div>
+                        <div class="tab-pane" id="description" role="tabpanel">
+                            <th:block th:if="${isReadOnlyForSalesperson}">
+                                <div
+                                    th:replace="products/product_description_read_only :: content"
+                                ></div>
+                            </th:block>
 
-				<div class="tab-content">
-					<div class="tab-pane active p-3" id="overview" role="tabpanel">
-						<div th:replace="products/product_overview :: content"></div>
-					</div>
-					<div class="tab-pane" id="description" role="tabpanel">
-						<th:block th:if="${isReadOnlyForSalesperson}">
-							<div
-								th:replace="products/product_description_read_only :: content"></div>
-						</th:block>
-
-						<th:block th:unless="${isReadOnlyForSalesperson}">
-							<div th:replace="products/product_description :: content"></div>
-						</th:block>
-					</div>
-					<div class="tab-pane" id="images" role="tabpanel">
-						<!--<th:block th:if="${isReadOnlyForSalesperson}">
+                            <th:block th:unless="${isReadOnlyForSalesperson}">
+                                <div
+                                    th:replace="products/product_description :: content"
+                                ></div>
+                            </th:block>
+                        </div>
+                        <div class="tab-pane" id="images" role="tabpanel">
+                            <!--<th:block th:if="${isReadOnlyForSalesperson}">
 							<div th:replace="products/product_images_read_only :: content"></div>
 						</th:block>
 
 						<th:block th:unless="${isReadOnlyForSalesperson}">
 							<div th:replace="products/product_images :: content"></div>
 						</th:block>-->
-						images
-					</div>
-					<div class="tab-pane p-3" id="details" role="tabpanel">
-						<!--<th:block th:if="${isReadOnlyForSalesperson}">
+                            images
+                        </div>
+                        <div class="tab-pane p-3" id="details" role="tabpanel">
+                            <!--<th:block th:if="${isReadOnlyForSalesperson}">
 							<div th:replace="products/product_details_read_only :: content"></div>
 						</th:block>
 
@@ -70,72 +121,103 @@
 									value="Add More Detail" onclick="addNextDetailSection()" />
 							</div>
 						</th:block>-->
-						details
+                            details
+                        </div>
+                        <div class="tab-pane p-3" id="shipping" role="tabpanel">
+                            <th:block th:if="${isReadOnlyForSalesperson}">
+                                <div
+                                    th:replace="products/product_shipping_read_only :: content"
+                                ></div>
+                            </th:block>
 
-					</div>
-					<div class="tab-pane p-3" id="shipping" role="tabpanel">
-						<th:block th:if="${isReadOnlyForSalesperson}">
-							<div th:replace="products/product_shipping_read_only :: content"></div>
-						</th:block>
+                            <th:block th:unless="${isReadOnlyForSalesperson}">
+                                <div
+                                    th:replace="products/product_shipping :: content"
+                                ></div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <input
+                        type="submit"
+                        value="Save"
+                        class="btn btn-primary m-3"
+                    />
+                    <input
+                        type="button"
+                        value="Cancel"
+                        class="btn btn-secondary"
+                        id="buttonCancel"
+                    />
+                </div>
+            </form>
 
-						<th:block th:unless="${isReadOnlyForSalesperson}">
-							<div th:replace="products/product_shipping :: content"></div>
-						</th:block>
-					</div>
-				</div>
-			</div>
-			<div class="text-center">
-				<input type="submit" value="Save" class="btn btn-primary m-3" /> <input
-					type="button" value="Cancel" class="btn btn-secondary"
-					id="buttonCancel" />
-			</div>
-		</form>
+            <div th:replace="modal_fragments :: modal_dialog"></div>
 
-		<div th:replace="modal_fragments :: modal_dialog"></div>
+            <div th:replace="fragments :: footer"></div>
+        </div>
+        <script type="text/javascript">
+            MAX_FILE_SIZE = 502400; // 500KB
 
-		<div th:replace="fragments :: footer"></div>
+            var productModuleURL = "[[@{/products}]]";
+            var brandModuleURL = "[[@{/brands}]]";
+            var defaultImageThumbnailSrc = "[[@{/images/image-thumbnail.png}]]";
+            var checkUniqueUrl = "[[@{/products/check_unique}]]";
 
-	</div>
-	<script type="text/javascript">
-		MAX_FILE_SIZE = 502400; // 500KB
+            var dropdownBrands = $("#brand");
+            var dropdownCategories = $("#category");
 
-		var productModuleURL = "[[@{/products}]]";
-		var brandModuleURL = "[[@{/brands}]]";
-		var defaultImageThumbnailSrc = "[[@{/images/image-thumbnail.png}]]";
-		var checkUniqueUrl = "[[@{/products/check_unique}]]";
-			
-		var dropdownBrands = $("#brand")
-		var dropdownCategories = $("#category")
-		
-		$(document).ready(function() {
-			
-			$('#shortDescription').richText();
-			$('#fullDescription').richText();
-			
-			dropdownBrands.change(() => {
-				dropdownCategories.empty()
-				getCategories()
-			})
-			getCategories()
-		})
-		
-		function getCategories() {
-			var brandId = dropdownBrands.val();
-			var url = brandModuleURL + "/" + brandId + "/categories" // brandrestcontroller mapping
-			console.log(url)
-			$.get(url, function(responseJson) {
-				console.log(responseJson);
-				$.each(responseJson, function(index, category) {
-					$("<option>").val(category.id).text(category.name).appendTo(dropdownCategories);
-				})
-			})
-		}
+            $(document).ready(function () {
+                $("#shortDescription").richText();
+                $("#fullDescription").richText();
 
-	</script>
-	<script th:src="@{/js/common_form.js}"></script>
-	<!--<script th:src="@{/js/product_form_overview.js}"></script>
+                dropdownBrands.change(() => {
+                    dropdownCategories.empty();
+                    getCategories();
+                });
+                getCategories();
+            });
+
+            function getCategories() {
+                var brandId = dropdownBrands.val();
+                var url = brandModuleURL + "/" + brandId + "/categories"; // brandrestcontroller mapping
+                console.log(url);
+                $.get(url, function (responseJson) {
+                    console.log(responseJson);
+                    $.each(responseJson, function (index, category) {
+                        $("<option>")
+                            .val(category.id)
+                            .text(category.name)
+                            .appendTo(dropdownCategories);
+                    });
+                });
+            }
+
+            function checkUnique(form) {
+                var name = $("#name").val();
+                var id = $("#id").val();
+                var csrfValue = $("input[name='_csrf']").val();
+                var params = { id: id, name: name, _csrf: csrfValue };
+                $.post(checkUniqueUrl, params, function (response) {
+                    console.log(response);
+                    if (response == "OK") {
+                        form.submit();
+                    } else if (response == "Duplicate") {
+                        showWarningModal("Product name already exists");
+                    } else {
+                        showErrorModal(
+                            "Unknown response from server: " + response
+                        );
+                    }
+                }).fail(function () {
+                    showErrorModal("Could not connect to server");
+                });
+            }
+        </script>
+        <script th:src="@{/js/common_form.js}"></script>
+        <!--<script th:src="@{/js/product_form_overview.js}"></script>
 		<script th:src="@{/js/product_form_images.js}"></script>
 		<script th:src="@{/js/product_form_details.js}"></script>-->
-</body>
-
+    </body>
 </html>
